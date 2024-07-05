@@ -15,7 +15,9 @@ export class HomePageComponent implements AfterViewInit  {
     "../assets/video/stream-bg.mp4", 
     "../assets/video/milky-way-desert-bg.mp4",
     "../assets/video/miami-bg.mp4",
-    "../assets/video/jellyfish-bg.mp4"
+    "../assets/video/jellyfish-bg.mp4",
+    "../assets/video/japan-rain-bg.mp4",
+    "../assets/video/koi-bg.mp4"
   ];
   videoSrc: string;
 
