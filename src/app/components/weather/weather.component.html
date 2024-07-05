@@ -1,0 +1,61 @@
+<div class="row weatherRow">
+    <div class="col-7">
+        <div id="currentTemp">
+            75&deg;
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <div class="btn-group btn-group-sm btn-group-toggle tempControls" data-toggle="buttons">
+
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="heat" autocomplete="off" checked> <a href="http://10.0.0.210/pins.php?=action=heat_on">Heat</a>
+                    </label>
+                    <label class="btn btn-outline-secondary active">
+                        <input type="radio" name="options" id="cool" autocomplete="off"> Cool
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="off" autocomplete="off"> <a href="http://10.0.0.210/pins.php?=action=heat_off">Off</a>
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+
+                <div class="btn-group btn-group-sm btn-group-toggle tempControls" data-toggle="buttons">
+
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="fan" id="auto" autocomplete="off" checked> Auto
+                    </label>
+                    <label class="btn btn-outline-secondary active">
+                        <input type="radio" name="fan" id="fanOff" autocomplete="off"> Off
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col fiveDayForecast">
+        <h2>Five Day Forecast</h2>
+        <div class="fiveDayList">
+            <div class="row">
+                <div class="col">Mon</div>
+                <div class="col fiveDayTemp">77&deg;</div>
+            </div>
+            <div class="row">
+                <div class="col">Tue</div>
+                <div class="col fiveDayTemp">67&deg;</div>
+            </div>
+            <div class="row">
+                <div class="col">Wed</div>
+                <div class="col fiveDayTemp">71&deg;</div>
+            </div>
+            <div class="row">
+                <div class="col">Thr</div>
+                <div class="col fiveDayTemp">72&deg;</div>
+            </div>
+            <div class="row">
+                <div class="col">Fri</div>
+                <div class="col fiveDayTemp">71&deg;</div>
+            </div>
+        </div>
+    </div>
+</div>

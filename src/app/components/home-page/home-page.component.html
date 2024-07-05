@@ -1,0 +1,13 @@
+<div class="container-fluid main-container">
+    <video autoplay muted loop id="backgroundVideo" #backgroundVideo>
+        <source [src]="videoSrc" type="video/mp4">
+    </video>
+
+    <div class="backgroundContainer"></div>
+
+    <app-current-date></app-current-date>
+    <h1><a [routerLink]="['/']" aria-label="Home Page">Hawk.I</a></h1>
+    <app-app-buttons></app-app-buttons>
+    <router-outlet></router-outlet>
+    
+</div>
