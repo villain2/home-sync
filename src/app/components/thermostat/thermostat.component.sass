@@ -1,0 +1,91 @@
+// set vars 
+
+
+// settings
+$slider-track-color-default: #373d3f
+$slider-track-color-cold: #373d3f
+$slider-track-color-warm: #394635
+$slider-track-color-hot: #19430d
+
+.veritcal-slider
+    position: absolute
+    width: 80vh
+    transform: translate(-50%, -50%) rotate(-90deg)
+    display: flex
+    top: 50% 
+    left: 10% 
+    align-items: center 
+    justify-content: space-around 
+    padding: 0 15px 
+    background: linear-gradient(to right, transparent, $slider-track-color-default) border-box
+    border-radius: 0.5em
+    margin-top: 20vw
+    transition: background 0.2s ease-in-out
+
+    &.cold-temp 
+        transition: background 0.2s ease-in-out
+        background: linear-gradient(to right, transparent, $slider-track-color-cold) border-box
+
+    &.warm-temp 
+        transition: background 0.2s ease-in-out
+        background: linear-gradient(to right, transparent, $slider-track-color-warm) border-box
+
+    &.hot-temp 
+        transition: background 0.2s ease-in-out
+        background: linear-gradient(to right, transparent, $slider-track-color-hot) border-box
+
+    
+        
+    #thermostatNumber 
+        //background-color: #ffd901
+        height: 40px
+        width: 70px
+        display: flex
+        align-items: center
+        justify-content: center
+        font-family: 'Poppins', sans-serif
+        font-weight: 600
+        color: #fff
+        font-size: 4.25em 
+        transform: rotate(90deg) 
+        transition: color 0.5s ease-in-out
+        padding-left: 22px 
+
+
+input[type=range]
+    width: 85%
+    -webkit-apperance: none
+    appearance: none 
+    background: transparent 
+    height: 5px
+    //position: relative
+    //background-color: rbga(255, 255, 255, 0.4)
+    border-radius: 5p
+    outline: none
+
+    &::-webkit-slider-runnable-track
+        height: 0.5rem 
+
+    &::-moz-range-track
+        height: 0.5rem 
+
+    &::-webkit-slider-thumb 
+        -webkit-apperance: none 
+        appearance: none 
+        background-color: #fff  
+        height: 2em 
+        width: 0.5em  
+        margin-top: -13px 
+        outline: none 
+        transition: box-shadow 0.2s ease-in-out
+
+    &::-moz-range-thumb 
+        border: none 
+        border-radius: 0
+        width: 0.5em  
+        margin-top: -13px 
+
+    &:hover::-webkit-slider-thumb 
+        border: 1pxsolid #053a5f
+        border-radius: 2em
+        box-shadow: 0 0 50px 10px #48abe0

@@ -16,6 +16,7 @@ import { MediaPageComponent } from './components/media-page/media-page.component
 import { HttpClientModule} from '@angular/common/http';
 
 import { WeatherService } from './services/weather.service';
+import { ThermostatComponent } from './components/thermostat/thermostat.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { WeatherService } from './services/weather.service';
     CurrentDateComponent,
     AppButtonsComponent,
     SecurityPageComponent,
-    MediaPageComponent
+    MediaPageComponent,
+    ThermostatComponent
   ],
   imports: [
     BrowserModule,
