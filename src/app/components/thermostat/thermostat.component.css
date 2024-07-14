@@ -3,7 +3,7 @@
   width: 80vh;
   transform: translate(-50%, -50%) rotate(-90deg);
   display: flex;
-  top: 50%;
+  top: 14vh;
   left: 10%;
   align-items: center;
   justify-content: space-around;
@@ -81,7 +81,7 @@ input[type=range]::-moz-range-thumb {
 }
 
 input[type=range]:hover::-webkit-slider-thumb {
-  border: 1pxsolid #053a5f;
+  border: 1px solid #053a5f;
   border-radius: 2em;
   box-shadow: 0 0 50px 10px #48abe0;
 }
