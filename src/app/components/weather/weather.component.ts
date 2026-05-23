@@ -1,52 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WeatherService } from 'src/app/services/weather.service';
+import { ThermostatService } from 'src/app/services/thermostat.service';
+
+type ThermostatButton = 'heat' | 'cool' | 'fan';
 
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.sass']
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, OnDestroy {
   weatherData: any;
   currentTemp: string;
   currentConditions: string;
   forecastArray: string[];
-  activeButton: string = '';
-  fanActive: boolean = false; // Track the state of the fan button
+  activeButton: 'heat' | 'cool' | '' = '';
+  fanActive = false;
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(private weatherService: WeatherService) { }
+  constructor(private weatherService: WeatherService, private thermostatService: ThermostatService) { }
 
   ngOnInit(): void {
-    this.weatherService.getWeatherData().subscribe(data => {
-      this.weatherData = data;
-      this.currentTemp = this.weatherData.currentTemp;
-      this.forecastArray = this.weatherData.forecast;
-      this.currentConditions = this.weatherData.currentWeather;
+    this.weatherService.getWeatherData()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        this.weatherData = data;
+        this.currentTemp = this.weatherData.currentTemp;
+        this.forecastArray = this.weatherData.forecast;
+        this.currentConditions = this.weatherData.currentWeather;
 
-      console.log(this.weatherData)
-      console.log(this.forecastArray)
-    });
+        console.log(this.weatherData);
+        console.log(this.forecastArray);
+      });
   }
 
-  setActive(button: string) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  setActive(button: 'heat' | 'cool') {
     if (button === this.activeButton) {
-      // If the clicked button is already active, deactivate it and the fan
-      this.activeButton = '';
-      this.fanActive = false;
+      this.deactivateHeatOrCool(button);
     } else {
-      // Activate the clicked button and also the fan
+      if (this.activeButton) {
+        this.sendRequest(this.activeButton, 'off');
+      }
       this.activeButton = button;
-      this.fanActive = true;
+      this.sendRequest(button, 'on');
+      if (!this.fanActive) {
+        this.sendRequest('fan', 'on');
+        this.fanActive = true;
+      }
     }
   }
 
   setFanActive() {
-    // Toggle the fan button independently
     this.fanActive = !this.fanActive;
-    // If the fan is deactivated, deactivate the heat and cool buttons as well
-    if (!this.fanActive) {
-      this.activeButton = '';
-    }
+    this.sendRequest('fan', this.fanActive ? 'on' : 'off');
   }
 
   isActive(button: string): boolean {
@@ -54,5 +67,40 @@ export class WeatherComponent implements OnInit {
       return this.fanActive;
     }
     return this.activeButton === button;
+  }
+
+  private deactivateHeatOrCool(button: 'heat' | 'cool') {
+    this.activeButton = '';
+    this.fanActive = false;
+    this.sendRequest(button, 'off');
+    this.sendRequest('fan', 'off');
+  }
+
+  private sendRequest(button: ThermostatButton, action: 'on' | 'off') {
+    const endpoint = this.getEndpoint(button, action);
+    if (!endpoint) {
+      console.warn(`Unknown thermostat button: ${button}`);
+      return;
+    }
+    console.log(`button ${button} and action ${action}.`);
+    this.thermostatService.sendRequest(endpoint)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: response => console.log(response),
+        error: error => console.error(error)
+      });
+  }
+
+  private getEndpoint(button: ThermostatButton, action: 'on' | 'off'): string | null {
+    switch (button) {
+      case 'cool':
+        return action === 'on' ? '/thermostat_control.php?action=cool_on' : '/thermostat_control.php?action=cool_off';
+      case 'heat':
+        return action === 'on' ? '/thermostat_control.php?action=heat_on' : '/thermostat_control.php?action=heat_off';
+      case 'fan':
+        return action === 'on' ? '/thermostat_control.php?action=fan_on' : '/thermostat_control.php?action=fan_off';
+      default:
+        return null;
+    }
   }
 }

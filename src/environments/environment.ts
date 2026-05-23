@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  /** Proxied to the device in dev (see proxy.conf.json) and via your host in production. */
+  thermostatBaseUrl: '/api/thermostat'
 };
 
 /*
