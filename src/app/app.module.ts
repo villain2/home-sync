@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +14,6 @@ import { CurrentDateComponent } from './components/current-date/current-date.com
 import { AppButtonsComponent } from './components/app-buttons/app-buttons.component';
 import { SecurityPageComponent } from './components/security-page/security-page.component';
 import { MediaPageComponent } from './components/media-page/media-page.component';
-import { HttpClientModule} from '@angular/common/http';
 
 import { WeatherService } from './services/weather.service';
 import { ThermostatComponent } from './components/thermostat/thermostat.component';

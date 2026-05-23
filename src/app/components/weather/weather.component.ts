@@ -59,7 +59,13 @@ export class WeatherComponent implements OnInit, OnDestroy {
 
   setFanActive() {
     this.fanActive = !this.fanActive;
-    this.sendRequest('fan', this.fanActive ? 'on' : 'off');
+    if (!this.fanActive) {
+      this.sendRequest('fan', 'off');
+      // Device requires fan for heat/cool; turning fan off must end the active mode.
+      this.deactivateActiveHeatOrCool();
+    } else {
+      this.sendRequest('fan', 'on');
+    }
   }
 
   isActive(button: string): boolean {
@@ -67,6 +73,15 @@ export class WeatherComponent implements OnInit, OnDestroy {
       return this.fanActive;
     }
     return this.activeButton === button;
+  }
+
+  private deactivateActiveHeatOrCool(): void {
+    if (!this.activeButton) {
+      return;
+    }
+    const mode = this.activeButton;
+    this.activeButton = '';
+    this.sendRequest(mode, 'off');
   }
 
   private deactivateHeatOrCool(button: 'heat' | 'cool') {
