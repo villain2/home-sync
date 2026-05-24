@@ -1,83 +1,221 @@
-@keyframes spin 
+// Kiosk weather layout — 1920×1080 wall display, readable over video background
+
+$panel-bg: rgba(20, 22, 24, 0.72)
+$panel-border: rgba(255, 255, 255, 0.12)
+$text-shadow-hero: 0 2px 12px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 0, 0, 0.5)
+$text-shadow-body: 0 1px 6px rgba(0, 0, 0, 0.8)
+
+$color-cool: #48abe0
+$color-heat: #e85d4c
+$color-fan: #e8e8e8
+
+@keyframes spin
     0%
         transform: rotate(0deg)
     100%
         transform: rotate(360deg)
 
 .spin
-    animation: spin 2s linear infinite 
+    animation: spin 1s linear infinite
 
-.fan-icon 
-    top: 5px
-    right: 5px
-    z-index: 1
-    padding: 5px
-    font-size: 0.5em
-    pointer-events: none
-    
-#currentTemp, .currentConditions
-    font-size: 10.25em
-    line-height: 0.85em
-    letter-spacing: -0.095em
-    text-align: center
-
-.currentConditions
-    padding: 0.5em 0 0 0
-    font-size: 2.5em 
-    letter-spacing: -0.005em
-
-.tempControls 
-    margin: 1.5em 0
-
-.fiveDayForecast
-    text-align: left
-    h2 
-        font-size: 1.25em
-        padding: 0.0125em 0.25em
-
-    .fiveDayList 
-        background: #1e2124
-        background: linear-gradient(to top, transparent, #373d3f) border-box
-        box-sizing: border-box
-        box-shadow: 0px 12px 24px rgba(0,0,0,0.6)  // corrected 'rbga' to 'rgba'
-        padding: 0.45em 1.05em
-        border: 1px solid #666666
-        border-radius: 0.25em
-
-        .row 
-            padding: 0.25em 0
-        
-        .fiveDayTemp
-            text-align: right
-            color: #989898
+.weather-kiosk
+    height: 100%
+    padding: 0 0.5rem
 
 .weatherRow
-    border-top: 1px dashed #565656
-    padding: 12px
+    border-top: 1px dashed rgba(255, 255, 255, 0.2)
+    padding: 1rem 0.75rem 0.5rem
+    min-height: 0
 
-.ac-controls 
-    margin: 12vh 0
-    
-    .btn-lg
-        font-size: 4em
-        padding: 0.4em 0.8em
-        position: relative 
-        
-        &:hover
-            box-shadow: 0 0 20px 5px rgba(0, 123, 255, 0.5)  // corrected 'rbga' to 'rgba'
-        
-            &.btn-outline-primary
-                box-shadow: 0 0 20px 5px rgba(0, 123, 255, 0.5)
-            
-            &.btn-outline-danger
-                box-shadow: 0 0 20px 5px rgba(255, 0 , 0, 0.5)
-            
-            &.btn-outline-light
-                box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5)
+.weather-col-thermostat
+    position: relative
+    min-height: 70vh
 
-button.active 
-    background-color: #007bff
-    border-color: #007bff
-    color: white
-    box-shadow: 0 0 10px 5px #48abe0
+.weather-col-main
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding: 0 1.25rem
+    min-height: 70vh
 
+// —— Current conditions hero ——
+
+.weather-hero
+    flex: 1 1 auto
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0.5rem 0
+
+.weather-hero-panel
+    background: $panel-bg
+    border: 1px solid $panel-border
+    border-radius: 0.35em
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55)
+    padding: 0.35em 0.6em 0.5em
+    width: 100%
+    max-width: 14em
+    text-align: center
+
+.current-temp,
+#currentTemp
+    font-size: 8.5rem
+    line-height: 0.9
+    letter-spacing: -0.06em
+    font-weight: 600
+    color: #fff
+    text-shadow: $text-shadow-hero
+
+.currentConditions
+    font-size: 2rem
+    line-height: 1.2
+    letter-spacing: -0.01em
+    color: rgba(255, 255, 255, 0.92)
+    text-shadow: $text-shadow-body
+    padding: 0.35em 0.25em 0.15em
+    text-transform: capitalize
+
+// —— HVAC controls ——
+
+.ac-controls
+    flex: 0 0 auto
+    padding: 1.25rem 0 1.5rem
+
+.ac-controls-row
+    display: flex
+    flex-wrap: wrap
+    justify-content: center
+    gap: 1rem
+
+.hvac-btn
+    display: inline-flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    min-width: 7.5rem
+    min-height: 5.5rem
+    padding: 0.65rem 1.25rem
+    font-size: 1.75rem
+    font-weight: 600
+    position: relative
+    border-width: 2px
+    text-shadow: $text-shadow-body
+    transition: box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease
+
+    .hvac-btn-icon
+        font-size: 1.35em
+        margin-bottom: 0.2em
+        pointer-events: none
+
+    .hvac-btn-label
+        pointer-events: none
+
+    &:hover
+        box-shadow: 0 0 24px 6px rgba(0, 0, 0, 0.35)
+
+    &.btn-outline-primary:hover
+        box-shadow: 0 0 24px 6px rgba($color-cool, 0.45)
+
+    &.btn-outline-danger:hover
+        box-shadow: 0 0 24px 6px rgba($color-heat, 0.45)
+
+    &.btn-outline-light:hover
+        box-shadow: 0 0 24px 6px rgba(255, 255, 255, 0.35)
+
+.hvac-btn--cool.active
+    background-color: $color-cool
+    border-color: lighten($color-cool, 8%)
+    color: #0a1620
+    box-shadow: 0 0 20px 8px rgba($color-cool, 0.55)
+
+.hvac-btn--heat.active
+    background-color: $color-heat
+    border-color: lighten($color-heat, 8%)
+    color: #1a0806
+    box-shadow: 0 0 20px 8px rgba($color-heat, 0.55)
+
+.hvac-btn--fan.active
+    background-color: rgba(255, 255, 255, 0.92)
+    border-color: #fff
+    color: #1a1a1a
+    box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.4)
+
+.fan-icon
+    position: static
+    padding: 0
+    z-index: auto
+
+// —— Forecast column ——
+
+.fiveDayForecast
+    display: flex
+    flex-direction: column
+    padding-left: 0.75rem
+    min-height: 70vh
+
+.forecast-heading
+    font-size: 1.5rem
+    font-weight: 600
+    letter-spacing: 0.04em
+    text-transform: uppercase
+    color: rgba(255, 255, 255, 0.85)
+    text-shadow: $text-shadow-body
+    margin: 0 0 0.65rem
+    padding: 0 0.25rem
+
+.fiveDayList
+    flex: 1 1 auto
+    background: $panel-bg
+    background: linear-gradient(to top, rgba(30, 33, 36, 0.9), rgba(55, 61, 63, 0.85)) border-box
+    box-sizing: border-box
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6)
+    padding: 0.65rem 1rem
+    border: 1px solid rgba(102, 102, 102, 0.6)
+    border-radius: 0.35em
+
+.forecast-day
+    display: flex
+    align-items: baseline
+    justify-content: space-between
+    gap: 0.75rem
+    padding: 0.55rem 0
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08)
+
+    &:last-child
+        border-bottom: none
+
+.forecast-period
+    flex: 1 1 auto
+    font-size: 1.15rem
+    font-weight: 500
+    color: rgba(255, 255, 255, 0.9)
+    text-shadow: $text-shadow-body
+    line-height: 1.25
+
+.forecast-temps,
+.fiveDayTemp
+    flex: 0 0 auto
+    text-align: right
+    font-size: 1.2rem
+    white-space: nowrap
+    text-shadow: $text-shadow-body
+
+.forecast-high
+    color: #f0f0f0
+
+    strong
+        font-weight: 700
+
+.forecast-sep
+    color: rgba(255, 255, 255, 0.35)
+    margin: 0 0.15em
+
+.forecast-low
+    color: #989898
+
+    strong
+        font-weight: 600
+
+// Legacy selectors (spec / tests)
+.tempControls
+    margin: 1.5em 0

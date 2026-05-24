@@ -1,81 +1,61 @@
-<div class="row weatherRow">
-    <div class="col-3">
-        <app-thermostat></app-thermostat>
-    </div>
-
-    <div class="col-6">
-        <div id="currentTemp">
-            {{currentTemp}}&deg;
+<div class="weather-kiosk">
+    <div class="row weatherRow no-gutters align-items-stretch">
+        <div class="col-3 weather-col-thermostat">
+            <app-thermostat></app-thermostat>
         </div>
 
-        <div class="currentConditions"> {{ currentConditions }}</div>
+        <div class="col-6 weather-col-main">
+            <section class="weather-hero" aria-label="Current weather">
+                <div class="weather-hero-panel">
+                    <div id="currentTemp" class="current-temp">{{ currentTemp }}&deg;</div>
+                    <div class="currentConditions">{{ currentConditions }}</div>
+                </div>
+            </section>
 
-        <div class="container text-center ac-controls">
-            <div class="row">
-              <div class="col">
-                <button type="button" 
-                    class="btn btn-outline-primary btn-lg"
-                    [ngClass]="{'active': isActive('cool')}"
-                    (click)="setActive('cool')"> 
-                    Cool
-                </button>
-              </div>
-              <div class="col">
-                <button type="button" 
-                    class="btn btn-outline-danger btn-lg"
-                    [ngClass]="{'active': isActive('heat')}"
-                    (click)="setActive('heat')"> 
-                    Heat</button>
-              </div>
-              <div class="col">
-                <button type="button" 
-                        class="btn btn-outline-light btn-lg" 
-                        [ngClass]="{'active': isActive('fan')}"
+            <section class="ac-controls" aria-label="HVAC controls">
+                <div class="ac-controls-row">
+                    <button
+                        type="button"
+                        class="btn btn-outline-primary btn-lg hvac-btn hvac-btn--cool"
+                        [ngClass]="{ active: isActive('cool') }"
+                        (click)="setActive('cool')">
+                        <i class="fas fa-snowflake hvac-btn-icon" aria-hidden="true"></i>
+                        <span class="hvac-btn-label">Cool</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger btn-lg hvac-btn hvac-btn--heat"
+                        [ngClass]="{ active: isActive('heat') }"
+                        (click)="setActive('heat')">
+                        <i class="fas fa-fire hvac-btn-icon" aria-hidden="true"></i>
+                        <span class="hvac-btn-label">Heat</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-light btn-lg hvac-btn hvac-btn--fan"
+                        [ngClass]="{ active: isActive('fan') }"
                         (click)="setFanActive()">
-                    <i class="fas fa-fan fan-icon position-absolute" [ngClass]="{'spin': isActive('fan')}"></i> Fan
-                  </button>
-              </div>
-            </div>
-          </div>
-
-        
-        <!-- <div class="row">
-            <div class="col-4 offset-3">
-
-                <div class="btn-group btn-group-sm btn-group-toggle tempControls" data-toggle="buttons">
-
-                    <label class="btn btn-outline-secondary">
-                        <input type="radio" name="options" id="heat" autocomplete="off" checked> <a href="http://10.0.0.210/pins.php?=action=heat_on">Heat</a>
-                    </label>
-                    <label class="btn btn-outline-secondary active">
-                        <input type="radio" name="options" id="cool" autocomplete="off"> Cool
-                    </label>
-                    <label class="btn btn-outline-secondary">
-                        <input type="radio" name="options" id="off" autocomplete="off"> <a href="http://10.0.0.210/pins.php?=action=heat_off">Off</a>
-                    </label>
+                        <i
+                            class="fas fa-fan hvac-btn-icon fan-icon"
+                            [ngClass]="{ spin: isActive('fan') }"
+                            aria-hidden="true"></i>
+                        <span class="hvac-btn-label">Fan</span>
+                    </button>
                 </div>
-            </div>
-            <div class="col-4">
+            </section>
+        </div>
 
-                <div class="btn-group btn-group-sm btn-group-toggle tempControls" data-toggle="buttons">
-
-                    <label class="btn btn-outline-secondary">
-                        <input type="radio" name="fan" id="auto" autocomplete="off" checked> Auto
-                    </label>
-                    <label class="btn btn-outline-secondary active">
-                        <input type="radio" name="fan" id="fanOff" autocomplete="off"> Off
-                    </label>
+        <div class="col-3 fiveDayForecast">
+            <h2 class="forecast-heading">Forecast</h2>
+            <div class="fiveDayList">
+                <div *ngFor="let day of forecastArray" class="forecast-day">
+                    <span class="forecast-period">{{ day.period }}</span>
+                    <span class="forecast-temps fiveDayTemp">
+                        <span class="forecast-high"><strong>{{ day.maxTemp }}</strong>&deg;</span>
+                        <span class="forecast-sep">/</span>
+                        <span class="forecast-low"><strong>{{ day.minTemp }}</strong>&deg;</span>
+                    </span>
                 </div>
-            </div>
-        </div> -->
-        
-    </div>
-    <div class="col fiveDayForecast">
-        <h2>Forecast</h2>
-        <div class="fiveDayList">
-            <div *ngFor="let day of forecastArray" class="row">
-                <div class="col">{{ day.period }}</div>
-                <div class="col fiveDayTemp"> <strong>{{ day.maxTemp}}</strong>&deg; F / <strong>{{ day.minTemp}}</strong>&deg; F</div>
             </div>
         </div>
     </div>
