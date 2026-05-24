@@ -1,0 +1,10 @@
+{
+  "/api/thermostat": {
+    "target": "http://YOUR_THERMOSTAT_HOST",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/thermostat": ""
+    }
+  }
+}
