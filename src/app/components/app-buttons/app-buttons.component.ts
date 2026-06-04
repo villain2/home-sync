@@ -33,20 +33,20 @@ export class AppButtonsComponent implements OnInit {
 
   playSound(e) {
     let audio = new Audio();
-    switch(e) {
+    switch (e) {
       case 'click':
-        audio.src = "./assets/audio/button-click.mp3";
+        audio.src = './assets/audio/button-click.mp3';
         break;
 
       case 'hover':
-        audio.src = "./assets/audio/button-over.mp3";
+        audio.src = './assets/audio/button-over.mp3';
         break;
 
       default:
-        break;
+        return;
     }
     audio.load();
-    audio.play();
+    audio.play().catch(err => console.warn('Audio playback blocked:', err));
   }
 
 }
