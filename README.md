@@ -18,6 +18,8 @@ Thermostat API calls use the relative path `/api/thermostat` so the device IP is
 
 `proxy.conf.json` is gitignored; only `proxy.conf.example.json` is committed.
 
+Weather uses a public-safe default location in `src/environments/environment*.ts`. If you want local weather, set `weatherLat`/`weatherLon` to a non-sensitive nearby location and avoid committing exact home coordinates.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.

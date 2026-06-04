@@ -6,6 +6,14 @@ import { ThermostatService } from 'src/app/services/thermostat.service';
 
 type ThermostatButton = 'heat' | 'cool' | 'fan';
 
+export interface WeatherForecast {
+  period: string;
+  minTemp: string;
+  maxTemp: string;
+  weather: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
@@ -15,7 +23,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
   weatherData: any;
   currentTemp: string;
   currentConditions: string;
-  forecastArray: string[];
+  forecastArray: WeatherForecast[] = [];
   activeButton: 'heat' | 'cool' | '' = '';
   fanActive = false;
   private readonly destroy$ = new Subject<void>();
@@ -30,9 +38,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
         this.currentTemp = this.weatherData.currentTemp;
         this.forecastArray = this.weatherData.forecast;
         this.currentConditions = this.weatherData.currentWeather;
-
-        console.log(this.weatherData);
-        console.log(this.forecastArray);
       });
   }
 
