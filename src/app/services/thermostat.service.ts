@@ -13,7 +13,7 @@ export class ThermostatService {
 
   sendRequest(endpoint: string): Observable<unknown> {
     if (!endpoint) {
-      return throwError(() => new Error('Thermostat endpoint is required'));
+      return throwError('Thermostat endpoint is required');
     }
     return this.http.get(`${this.baseUrl}${endpoint}`);
   }

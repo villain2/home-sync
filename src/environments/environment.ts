@@ -5,7 +5,10 @@
 export const environment = {
   production: false,
   /** Proxied to the device in dev (see proxy.conf.json) and via your host in production. */
-  thermostatBaseUrl: '/api/thermostat'
+  thermostatBaseUrl: '/api/thermostat',
+  /** Home location for weather.gov API — keep private, do not commit real coords to a public repo */
+  weatherLat: '39.4153',
+  weatherLon: '-76.7871'
 };
 
 /*

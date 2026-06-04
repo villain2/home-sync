@@ -8,11 +8,17 @@ import { WeatherComponent } from './components/weather/weather.component';
 
 
 const routes: Routes = [
-  {path: '', component: WeatherComponent },
-  {path: 'security', component: SecurityPageComponent},
-  {path: 'media', component: MediaPageComponent},
-  {path: 'weather', component: WeatherComponent},
-  {path: '**', component: NotFoundComponent }
+  {
+    path: '',
+    component: HomePageComponent,
+    children: [
+      { path: '', component: WeatherComponent },
+      { path: 'weather', component: WeatherComponent },
+      { path: 'security', component: SecurityPageComponent },
+      { path: 'media', component: MediaPageComponent },
+    ]
+  },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

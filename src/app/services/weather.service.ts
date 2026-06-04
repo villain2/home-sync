@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  private url: string = 'https://forecast.weather.gov/MapClick.php?lat=39.4153&lon=-76.7871&unit=0&lg=english&FcstType=dwml';
+  private url = `https://forecast.weather.gov/MapClick.php?lat=${environment.weatherLat}&lon=${environment.weatherLon}&unit=0&lg=english&FcstType=dwml`;
 
   constructor(private http: HttpClient) { }
 
   getWeatherData(): Observable<any> {
-    console.log(this.url);
     return this.http.get(this.url, { responseType: 'text' }).pipe(
       map((xmlString: string) => this.parseXML(xmlString))
     );
@@ -60,36 +60,5 @@ export class WeatherService {
       forecast
     };
   }
-
-  private xmlToJson(xml: any): any {
-    let obj: any = {};
-    if (xml.nodeType === 1) { // element
-      if (xml.attributes.length > 0) {
-        obj['@attributes'] = {};
-        for (let j = 0; j < xml.attributes.length; j++) {
-          const attribute = xml.attributes.item(j);
-          obj['@attributes'][attribute.nodeName] = attribute.nodeValue;
-        }
-      }
-    } else if (xml.nodeType === 3) { // text
-      obj = xml.nodeValue;
-    }
-    if (xml.hasChildNodes()) {
-      for (let i = 0; i < xml.childNodes.length; i++) {
-        const item = xml.childNodes.item(i);
-        const nodeName = item.nodeName;
-        if (typeof (obj[nodeName]) === 'undefined') {
-          obj[nodeName] = this.xmlToJson(item);
-        } else {
-          if (typeof (obj[nodeName].push) === 'undefined') {
-            const old = obj[nodeName];
-            obj[nodeName] = [];
-            obj[nodeName].push(old);
-          }
-          obj[nodeName].push(this.xmlToJson(item));
-        }
-      }
-    }
-    return obj;
-  }
 }
+
