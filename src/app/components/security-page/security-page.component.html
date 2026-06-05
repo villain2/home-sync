@@ -1,68 +1,89 @@
-<div class="container">
-  <h2>Security System</h2>
+<div class="security-page">
 
-  <div class="row homeSecRow">
-    
-    <div class="col">
-      <div class="btn-group btn-group-lg btn-group-toggle tempControls" data-toggle="buttons">
-  
-            <label class="btn btn-outline-secondary">
-                <input type="radio" name="options" id="armed" autocomplete="off" checked> Armed
-            </label>
-            <label class="btn btn-outline-secondary active">
-                <input type="radio" name="options" id="away" autocomplete="off"> Away
-            </label>
-            <label class="btn btn-outline-secondary">
-                <input type="radio" name="options" id="off" autocomplete="off"> Off
-            </label>
-      </div>
+  <!-- Header row: alarm state badge + emergency button -->
+  <div class="security-header">
+    <div class="alarm-state">
+      <span class="alarm-badge" [ngClass]="getAlarmBadgeClass()">
+        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+        {{ alarmMode | titlecase }}
+      </span>
     </div>
+
+    <!-- TODO: [STORY] 911 Emergency Call Integration — button is a placeholder only -->
+    <button
+      class="btn btn-emergency"
+      type="button"
+      (click)="onEmergency()"
+      title="Emergency — Coming Soon"
+      disabled>
+      <i class="fas fa-phone" aria-hidden="true"></i>
+      Emergency (Coming Soon)
+    </button>
   </div>
 
-  <div class="row homeSecRow">
-    <div class="col-12">
-    <div class="list-group">
-      <button class="list-group-item list-group-item-action active">
-        Cameras
-      </button>
-      <button class="list-group-item list-group-item-action">Motion Sensor</button>
-      <button class="list-group-item list-group-item-action">Smoke Detectors</button>
-      <button class="list-group-item list-group-item-action">Carbon Monoxide Sensor</button>
-      <button class="list-group-item list-group-item-action">Account Info</button>
-    </div>
-    </div>
+  <!-- Alarm mode controls -->
+  <div class="security-alarm-controls">
+    <button
+      type="button"
+      class="btn alarm-btn"
+      [ngClass]="{ 'alarm-btn--active': alarmMode === 'armed' }"
+      (click)="setAlarmMode('armed')">
+      <i class="fas fa-lock" aria-hidden="true"></i> Armed
+    </button>
+    <button
+      type="button"
+      class="btn alarm-btn"
+      [ngClass]="{ 'alarm-btn--active': alarmMode === 'away' }"
+      (click)="setAlarmMode('away')">
+      <i class="fas fa-car" aria-hidden="true"></i> Away
+    </button>
+    <button
+      type="button"
+      class="btn alarm-btn"
+      [ngClass]="{ 'alarm-btn--active': alarmMode === 'disarmed' }"
+      (click)="setAlarmMode('disarmed')">
+      <i class="fas fa-lock-open" aria-hidden="true"></i> Disarmed
+    </button>
   </div>
 
-  <div class="row homeSecRow">
-      
-      <div class="col-12">
-          <div class="card">
-            <img class="card-img-top" src="https://via.placeholder.com/200" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Doorbell Camera</h5>
-              <p class="card-text"></p>
+  <!-- Camera feeds -->
+  <section class="security-section" aria-label="Camera Feeds">
+    <h3 class="security-section-title">
+      <i class="fas fa-video" aria-hidden="true"></i> Cameras
+    </h3>
+    <div class="camera-grid">
+      <div class="camera-card" *ngFor="let cam of cameras">
+        <div class="camera-feed">
+          <ng-container *ngIf="cam.streamUrl; else cameraPlaceholder">
+            <img [src]="cam.streamUrl" [alt]="cam.name + ' feed'" class="camera-img">
+          </ng-container>
+          <ng-template #cameraPlaceholder>
+            <div class="camera-placeholder">
+              <i class="fas fa-video-slash" aria-hidden="true"></i>
+              <span>No Signal</span>
             </div>
-            <div class="card-footer">
-              <small class="text-muted">Last updated 3 mins ago</small>
-            </div>
-          </div>
-      </div>
-  </div>
-
-  <div class="row homeSecRow">
-    <div class="col-12">
-      <div class="card">
-        <img class="card-img-top" src="https://via.placeholder.com/200" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Backdoor Camera</h5>
-          <p class="card-text"></p>
+          </ng-template>
         </div>
-        <div class="card-footer">
-          <small class="text-muted">Last updated 3 mins ago</small>
-        </div>
+        <div class="camera-label">{{ cam.name }}</div>
       </div>
     </div>
-  </div>
-  
-  
+  </section>
+
+  <!-- Sensor status -->
+  <section class="security-section" aria-label="Sensors">
+    <h3 class="security-section-title">
+      <i class="fas fa-broadcast-tower" aria-hidden="true"></i> Sensors
+    </h3>
+    <ul class="sensor-list">
+      <li
+        class="sensor-item"
+        [ngClass]="getSensorStateClass(sensor.state)"
+        *ngFor="let sensor of sensors">
+        <i class="fas {{ getSensorIcon(sensor.type) }} sensor-icon" aria-hidden="true"></i>
+        <span class="sensor-name">{{ sensor.name }}</span>
+        <span class="sensor-state">{{ sensor.state | titlecase }}</span>
+      </li>
+    </ul>
+  </section>
+
 </div>
