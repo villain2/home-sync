@@ -16,6 +16,7 @@ import { SecurityPageComponent } from './components/security-page/security-page.
 import { MediaPageComponent } from './components/media-page/media-page.component';
 
 import { WeatherService } from './services/weather.service';
+import { SecurityService } from './services/security.service';
 import { ThermostatComponent } from './components/thermostat/thermostat.component';
 
 @NgModule({
@@ -38,7 +39,8 @@ import { ThermostatComponent } from './components/thermostat/thermostat.componen
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
-    WeatherService
+    WeatherService,
+    SecurityService
   ],
   bootstrap: [AppComponent]
 })
