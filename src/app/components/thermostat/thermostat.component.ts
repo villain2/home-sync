@@ -1,17 +1,44 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ThermostatService, ThermostatState } from 'src/app/services/thermostat.service';
 
 @Component({
   selector: 'app-thermostat',
   templateUrl: './thermostat.component.html',
   styleUrls: ['./thermostat.component.sass']
 })
-export class ThermostatComponent implements AfterViewInit, OnDestroy {
+export class ThermostatComponent implements OnInit, AfterViewInit, OnDestroy {
   temperatureColor: string;
-  thermostatValue = 32;
+  thermostatValue = 72;
+  hardwareTemp: number | null = null;
+  isOnline = false;
 
-  @ViewChild('thermostatNumber') thermostatNumber: ElementRef<HTMLDivElement> | undefined;
   @ViewChild('thermostatRange') thermostatRange: ElementRef<HTMLInputElement> | undefined;
   @ViewChild('verticalSlider') verticalSlider: ElementRef<HTMLInputElement> | undefined;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(private thermostatService: ThermostatService) {}
+
+  ngOnInit(): void {
+    // Subscribe to hardware state updates
+    this.thermostatService.getState()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((state: ThermostatState) => {
+        this.hardwareTemp = state.currentTemp;
+        this.isOnline = state.online;
+        if (state.setpoint) {
+          this.thermostatValue = state.setpoint;
+        }
+        this.getTempColor(this.thermostatValue);
+      });
+
+    // Begin polling the Pi
+    this.thermostatService.startPolling()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
 
   ngAfterViewInit(): void {
     if (this.thermostatRange?.nativeElement) {
@@ -19,11 +46,18 @@ export class ThermostatComponent implements AfterViewInit, OnDestroy {
       slider.oninput = () => {
         this.thermostatValue = +slider.value;
         this.getTempColor(this.thermostatValue);
+        this.thermostatService.setSetpoint(this.thermostatValue)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            error: err => console.error('Failed to set setpoint:', err)
+          });
       };
     }
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     if (this.thermostatRange?.nativeElement) {
       this.thermostatRange.nativeElement.oninput = null;
     }

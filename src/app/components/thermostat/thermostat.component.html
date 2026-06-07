@@ -1,5 +1,13 @@
 <div class="veritcal-slider" #verticalSlider>
-    <input type="range" min="32" max="90" value="32" class="thermostat-range" id="thermostatRange" #thermostatRange>
-    
-    <div id="thermostatNumber" #thermostatNumber>{{ thermostatValue }}&deg;</div>
+    <input type="range" min="32" max="90" [value]="thermostatValue" class="thermostat-range" id="thermostatRange" #thermostatRange>
+
+    <div id="thermostatNumber">
+        <span *ngIf="hardwareTemp !== null" class="hardware-temp">{{ hardwareTemp }}&deg;</span>
+        <span class="setpoint-temp">{{ thermostatValue }}&deg;</span>
+    </div>
+</div>
+
+<div class="hardware-status" [ngClass]="isOnline ? 'status--online' : 'status--offline'">
+    <i class="fas" [ngClass]="isOnline ? 'fa-circle' : 'fa-exclamation-circle'" aria-hidden="true"></i>
+    {{ isOnline ? 'Connected' : 'Hardware Unavailable' }}
 </div>
